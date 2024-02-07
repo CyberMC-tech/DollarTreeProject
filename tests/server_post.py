@@ -1,7 +1,11 @@
 import requests
 
-url = "http://127.0.0.1:5000/get_employee_info"
-data = {"username": "", "password": ""}
+username = input("Username: ")
+password = input("Password: ")
+
+
+url = "http://164.92.74.220:5000"
+data = {"username": username, "password": password}
 
 response = requests.post(url, json=data)
 print(response.text)

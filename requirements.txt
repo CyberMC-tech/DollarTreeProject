@@ -1,4 +1,7 @@
 Flask==3.0.1
 requests==2.31.0
 selenium==4.16.0
-webdriver-manager==4.0.1
+
+certifi~=2024.2.2
+Kivy~=2.3.0
+kivymd~=1.2.0

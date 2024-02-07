@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+
+  myflaskapp:
+
+    build: server
+
+    ports:
+      - "5000:5000" # Expose the Flask app on port 8000 of the host
+
+    volumes:
+      - .:/app # Mount the current directory to /app in the container for development
+
+    environment:
+      - FLASK_APP=server.py # Use your main Flask script
+      - FLASK_RUN_HOST=0.0.0.0
+      - PYTHONPATH=/app
+      - HEADLESS=true
+
+    command: ["flask", "-A", "server/app.py", "run"] # Command adjusted for provided Dockerfile

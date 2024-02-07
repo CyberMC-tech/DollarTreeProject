@@ -16,14 +16,32 @@ from tools.helpers import (
     extract_position,
 )
 
-
 app = Flask(__name__)
 
 info_popup_xpath = "/html/body/div/div[1]/div[2]/div/div/table/tbody/tr/td[1]/h6/a"
 
 
 class Employee:
+    """
+    A class to represent a Dollar Tree employee.
+
+    Attributes:
+        driver (webdriver): A Selenium WebDriver instance used to interact with the Dollar Tree website.
+    """
+
     def __init__(self):
+        """
+        Initialize a new Employee instance.
+        """
+        self.position = None
+        self.store_number = None
+        self.phone_number = None
+        self.address = None
+        self.id = None
+        self.next_shift = None
+        self.full_name = None
+        self.last_name = None
+        self.first_name = None
         options = Options()
         options.add_argument("--no-sandbox")
         options.add_argument("--headless")
@@ -33,7 +51,14 @@ class Employee:
             service=Service(ChromeDriverManager().install()), options=options
         )
 
-    def login(self, username, password):
+    def login(self, username: str, password: str):
+        """
+        Login to the Dollar Tree website using the given username and password.
+
+        Args:
+            username (str): The username used to login to the Dollar Tree website.
+            password (str): The password used to login to the Dollar Tree website.
+        """
         self.driver.get("https://compassmobile.dollartree.com")
         username_field = self.driver.find_element(By.ID, "idUNField")
         password_field = self.driver.find_element(By.ID, "idPWField")
@@ -43,10 +68,16 @@ class Employee:
         password_field.send_keys(Keys.RETURN)
 
     def get_next_shift(self):
+        """
+        Get the next shift for the currently logged in employee.
+        """
         css_selector = "div#cardToggleIcon1 > div > table > tbody > tr > td > div:nth-of-type(2) > a"
         self.next_shift = self.driver.find_element(By.CSS_SELECTOR, css_selector).text
 
     def get_employee_info(self):
+        """
+        Get information about the currently logged in employee.
+        """
         info_popup = WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable((By.XPATH, info_popup_xpath))
         )
@@ -77,7 +108,13 @@ class Employee:
         self.store_number = extract_store_number(store_number)
         self.position = extract_position(position)
 
-    def return_data(self):
+    def return_data(self) -> dict:
+        """
+        Return a dictionary containing information about the currently logged in employee.
+
+        Returns:
+            dict: A dictionary containing information about the currently logged in employee.
+        """
         return {
             "full_name": self.full_name,
             "next_shift": self.next_shift,
@@ -91,7 +128,19 @@ class Employee:
         }
 
 
-@app.route("/get_employee_info", methods=["POST"])
+"""
+This function is used to extract information about the currently logged in employee.
+
+Args:
+    username (str): The username used to login to the Dollar Tree website.
+    password (str): The password used to login to the Dollar Tree website.
+
+Returns:
+    dict: A dictionary containing information about the currently logged in employee.
+"""
+
+
+@app.route("/", methods=["POST"])
 def get_employee_info_api():
     content = request.json
     username = content["username"]
