@@ -38,4 +38,3 @@ ENV HEADLESS=true
 
 # Run app.py when the container launches
 CMD ["flask", "run"]
-

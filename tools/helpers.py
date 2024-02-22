@@ -12,28 +12,23 @@ def extract_address(data):
     split_data = data.split("\n")
     street_name_number = split_data[1]
     city_state_zip = split_data[2]
-    full_address = f"{street_name_number} {city_state_zip}"
-    return full_address
+    return f"{street_name_number} {city_state_zip}"
 
 
 def extract_phone_number(data):
     split_data = data.split("\n")
-    phone_number = split_data[1]
-    return phone_number
+    return split_data[1]
 
 
 def extract_id(data):
     first_line = data.split("\n")[0]
-    employee_id = first_line.split(": ")[1]
-    return employee_id
+    return first_line.split(": ")[1]
 
 
 def extract_store_number(data):
     split_data = data.split("\n")[1]
-    store_number = split_data.split(" ")[1]
-    return store_number
+    return split_data.split(" ")[1]
 
 
 def extract_position(data):
-    employee_position = data.split("\n")[1]
-    return employee_position
+    return data.split("\n")[1]
